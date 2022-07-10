@@ -17,9 +17,9 @@ stdenv.mkDerivation rec {
     })
   ];
 
-  propagatedBuildInputs = [ glibc glib libnotify xdg-utils ncurses nss at-spi2-core libxcb libdrm gtk3 mesa qt515.full zlib ];
+  buildInputs = [ gcc glibc glib libnotify xdg-utils ncurses nss at-spi2-core libxcb libdrm gtk3 mesa qt515.full zlib ];
 
-  libPath = lib.makeLibraryPath [ stdenv.cc.cc libX11 glib libnotify xdg-utils ncurses nss at-spi2-core libxcb libdrm gtk3 mesa qt515.full zlib ];
+  nativeBuildINputs = [ autoPatchelfHook ];
 
   phases = [ "installPhase" "fixupPhase" "installCheckPhase" "distPhase" ];
 
@@ -33,12 +33,6 @@ stdenv.mkDerivation rec {
        base_kit=`echo $srcs|cut -d" " -f1`
      fi
      bash $base_kit --log $out/basekit_install_log --extract-only --extract-folder $out/tmp -a --install-dir $out --download-cache $out/tmp --download-dir $out/tmp --log-dir $out/tmp
-     for file in `grep -l -r "/bin/sh" $out/tmp`
-     do
-       sed -e "s,/bin/sh,${stdenv.shell},g" -i $file
-     done
-     export HOME=$out
-     find $out/tmp -type f -exec $SHELL -c "patchelf --set-interpreter \"$(cat $NIX_CC/nix-support/dynamic-linker)\" --set-rpath ${glibc}/lib:$libPath:$out/tmp/lib 2>/dev/null {}" \;
      $out/tmp/l_BaseKit_p_${version}_offline/install.sh --install-dir $out --download-cache $out/tmp --download-dir $out/tmp --log-dir $out/tmp
      rm -rf $out/tmp
   '';
@@ -46,11 +40,6 @@ stdenv.mkDerivation rec {
   postFixup = ''
     echo "Fixing rights..."
     chmod u+w -R $out
-    echo "Patching rpath and interpreter..."
-    for dir in `find $out -mindepth 1 -maxdepth 1 -type d`
-    do
-      find $dir -type f -exec $SHELL -c "patchelf --set-interpreter \"$(cat $NIX_CC/nix-support/dynamic-linker)\" --set-rpath ${glibc}/lib:$libPath:$dir/latest/lib64 2>/dev/null {}" \;
-    done
   '';
 
   meta = {
