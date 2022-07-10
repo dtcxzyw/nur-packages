@@ -34,8 +34,8 @@ jobs:
         cachixName:
           - dtcxzyw
         nixPath:
-          - nixpkgs=channel:nixos-stable
-          - nixpkgs=channel:nixpkgs-stable
+          - nixpkgs=channel:nixos-unstable
+          - nixpkgs=channel:nixpkgs-unstable
           - nixpkgs=channel:nixos-22.05
     runs-on: ubuntu-latest
     steps:
