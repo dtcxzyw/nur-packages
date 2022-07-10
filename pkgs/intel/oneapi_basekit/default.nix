@@ -1,5 +1,5 @@
 # adapted from https://github.com/Gricad/nur-packages/blob/master/pkgs/intel/oneapi.nix
-{ lib, stdenv, fetchurl, glibc, libX11, glib, libnotify, xdg-utils, ncurses, nss, at-spi2-core, libxcb, libdrm, gtk3, mesa, qt515, zlib }:
+{ lib, stdenv, fetchurl, gcc, glibc, libX11, glib, libnotify, xdg-utils, ncurses, nss, at-spi2-core, libxcb, libdrm, gtk3, mesa, qt515, zlib }:
 
 stdenv.mkDerivation rec {
   version = "2022.2.0.262"; 
