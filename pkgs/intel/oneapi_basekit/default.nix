@@ -38,6 +38,7 @@ stdenv.mkDerivation rec {
        sed -e "s,/bin/sh,${stdenv.shell},g" -i $file
      done
      export HOME=$out
+     find $out/tmp -type f -exec $SHELL -c "patchelf --set-interpreter \"$(cat $NIX_CC/nix-support/dynamic-linker)\" --set-rpath ${glibc}/lib:$libPath:$out/tmp/lib 2>/dev/null {}" \;
      $out/tmp/l_BaseKit_p_${version}_offline/install.sh --install-dir $out --download-cache $out/tmp --download-dir $out/tmp --log-dir $out/tmp
      rm -rf $out/tmp
   '';

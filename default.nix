@@ -15,6 +15,6 @@
   overlays = import ./overlays; # nixpkgs overlays
 
   # example-package = pkgs.callPackage ./pkgs/example-package { };
-  oneapi-basekit-package = pkgs.callPackage ./pkgs/intel/oneapi_basekit { };
+  oneapi-basekit = pkgs.callPackage ./pkgs/intel/oneapi_basekit { };
 }
 
